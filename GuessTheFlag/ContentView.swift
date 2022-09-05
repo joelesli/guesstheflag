@@ -23,6 +23,19 @@ struct FlagButton: View {
     }
 }
 
+struct WhiteForeground: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .foregroundColor(.white)
+    }
+}
+
+extension View {
+    func whiteForeground() -> some View {
+        modifier(WhiteForeground())
+    }
+}
+
 struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
@@ -40,23 +53,23 @@ struct ContentView: View {
             VStack {
                 Text("Guess the flag")
                     .font(.largeTitle.bold())
-                    .foregroundColor(.white)
+                    .whiteForeground()
                 Text("Score: \(score)")
                     .font(.title3.bold())
-                    .foregroundColor(.white)
+                    .whiteForeground()
                 Text("\(questionCount) of \(maxQuestions) flag guesses")
                     .font(.caption.weight(.light))
-                    .foregroundColor(.white)
+                    .whiteForeground()
                 
                 Spacer()
                 VStack(spacing: 30) {
                     VStack {
                         Text("Tap the flag of")
-                            .foregroundColor(Color.white)
                             .font(.subheadline.weight(.heavy))
+                            .whiteForeground()
                         Text(countries[correctAnswer])
-                            .foregroundColor(Color.white)
                             .font(.largeTitle.weight(.heavy))
+                            .whiteForeground()
                     }
                     
                     ForEach(0..<3) { number in
