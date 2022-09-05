@@ -7,6 +7,22 @@
 
 import SwiftUI
 
+struct FlagButton: View {
+    let imageName : String
+    let callBack: (() -> Void)
+    
+    var body: some View {
+        Button {
+            callBack()
+        } label: {
+            Image(imageName)
+                .renderingMode(.original)
+        }
+        .cornerRadius(10.0)
+        .shadow(radius: 10)
+    }
+}
+
 struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
@@ -44,14 +60,9 @@ struct ContentView: View {
                     }
                     
                     ForEach(0..<3) { number in
-                        Button {
+                        FlagButton(imageName: countries[number]) {
                             flagTapped(number)
-                        } label: {
-                            Image(countries[number])
-                                .renderingMode(.original)
                         }
-                        .cornerRadius(10.0)
-                        .shadow(radius: 10)
                     }
                 }
                 .alert(scoreTitle, isPresented: $showingScore) {
@@ -62,14 +73,12 @@ struct ContentView: View {
                     let message = canKeepPlaying() ? "Your score is \(score)" : "Your final score is \(score)"
                     Text(message)
                 }
-                
-                
             }
         }
     }
     
     func flagTapped(_ number: Int) {
-        scoreTitle = number == correctAnswer ? "Correct" : "Wrong that is the Flag of \(countries[number])"
+        scoreTitle = number == correctAnswer ? "Correct" : "Wrong, that is the Flag of \(countries[number])"
         score = number == correctAnswer ? score + 1 : score - 2
         showingScore = true
         questionCount += 1
