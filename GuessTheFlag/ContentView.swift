@@ -37,7 +37,7 @@ extension View {
 }
 
 struct ContentView: View {
-    @State private var showingScore = false
+    @State private var showingFeedback = false
     @State private var scoreTitle = ""
     @State private var score: Int = 0
     let maxQuestions = 8
@@ -76,9 +76,11 @@ struct ContentView: View {
                         FlagButton(imageName: countries[number]) {
                             flagTapped(number)
                         }
+                        .opacity(!showingFeedback ? 1 : alphaForFlag(number)) //set wrong answer to 0.5 alpha
+                        .animation(.easeInOut, value: showingFeedback)
                     }
                 }
-                .alert(scoreTitle, isPresented: $showingScore) {
+                .alert(scoreTitle, isPresented: $showingFeedback) {
                     let buttonTitle = canKeepPlaying() ? "Continue" : "Play again"
                     let action = canKeepPlaying() ? askQuestion : restartGame
                     Button(buttonTitle, action: action)
@@ -90,10 +92,18 @@ struct ContentView: View {
         }
     }
     
+    func alphaForFlag(_ number: Int) -> Double {
+        isCorrect(number) ? 1 : 0.25
+    }
+    
+    func isCorrect(_ number: Int) -> Bool {
+        number == correctAnswer
+    }
+    
     func flagTapped(_ number: Int) {
-        scoreTitle = number == correctAnswer ? "Correct" : "Wrong, that is the Flag of \(countries[number])"
+        scoreTitle = isCorrect(number) ? "Correct" : "Wrong, that is the Flag of \(countries[number])"
         score = number == correctAnswer ? score + 1 : score - 2
-        showingScore = true
+        showingFeedback = true
         questionCount += 1
     }
     
