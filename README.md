@@ -8,3 +8,8 @@ This application was built following the SwiftUI tutorial of [Hacking with Swift
 
 
 Again, impressive what can be done with less than 100 lines of code.
+
+Includes the [Challenge for day 34](https://www.hackingwithswift.com/100/swiftui/34) in [Animation: Wrap up](https://www.hackingwithswift.com/books/ios-swiftui/animation-wrap-up)
+
+1. When you tap a flag, make it spin around 360 degrees on the Y axis.
+2. Make the other two buttons fade out to 25% opacity.
