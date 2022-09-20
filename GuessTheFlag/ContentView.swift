@@ -78,6 +78,8 @@ struct ContentView: View {
                         }
                         .opacity(!showingFeedback ? 1 : alphaForFlag(number)) //set wrong answer to 0.5 alpha
                         .animation(.easeInOut, value: showingFeedback)
+                        .rotation3DEffect(!showingFeedback ? Angle(degrees: 0) : rotationAngleForFlag(number), axis: (x: 0.0, y: 1.0, z: 0.0), anchor: .center)
+                        .animation(!showingFeedback ? .default : .linear(duration: 3).repeatForever(autoreverses: false), value: showingFeedback)
                     }
                 }
                 .alert(scoreTitle, isPresented: $showingFeedback) {
@@ -88,8 +90,13 @@ struct ContentView: View {
                     let message = canKeepPlaying() ? "Your score is \(score)" : "Your final score is \(score)"
                     Text(message)
                 }
+
             }
         }
+    }
+    
+    func rotationAngleForFlag(_ number: Int) -> Angle {
+        isCorrect(number) ? Angle(degrees: 360.0) : Angle(degrees: 0)
     }
     
     func alphaForFlag(_ number: Int) -> Double {
